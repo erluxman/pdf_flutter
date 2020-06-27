@@ -1,0 +1,29 @@
+name: pdf_flutter
+description: PDF loading Widget for Flutter
+version: 0.0.1
+author: Laxman Bhattarai (erluxman) <erluxman@gmail.com>
+homepage:
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  pedantic: ^1.9.0
+  path_provider: ^1.6.11
+  http:
+  uuid: ^2.1.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.erluxman.pdf_flutter
+        pluginClass: PdfFlutterPlugin
+      ios:
+        pluginClass: PdfFlutterPlugin

@@ -1,0 +1,23 @@
+name: pdf_flutter_example
+description: Demonstrates how to use the pdf_flutter plugin.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 0.0.1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  pdf_flutter:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - assets/images/
+  uses-material-design: true
