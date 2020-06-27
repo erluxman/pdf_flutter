@@ -1,4 +1,5 @@
 # pdf_flutter
+[![pub package](https://img.shields.io/pub/v/pdf_flutter.svg)](https://pub.dartlang.org/packages/pdf_flutter)
 
 #### 1. Add `pdf_flutter`on `pubspec.yml` 
 
