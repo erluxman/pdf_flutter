@@ -13,14 +13,31 @@ Add this on `ios/Runner/info.plist`:
         <key>io.flutter.embedded_views_preview</key>
         <true/>
 
-#### 3. Start Using
+#### 3. Start Using 
 
+        //Load PDF from network
         PDF.network(
                 'https://raw.githubusercontent.com/FlutterInThai/Dart-for-Flutter-Sheet-cheet/master/Dart-for-Flutter-Cheat-Sheet.pdf',
                 height: 500,
                 width: 300,
-                )
-                
+        )
+              
+        //Load PDF files
+        File fileName;  
+        PDF.file(
+            fileName,
+            height: 200,
+            width: 100,
+            placeHolder: Image.asset("assets/images/pdf.png", height: 200, width: 100),
+        )
+        
+        //Load PDF from assets
+        PDF.assets(
+            "assets/pdf/demo.pdf",
+            height: 200,
+            width: 100,
+            placeHolder: Image.asset("assets/images/pdf.png", height: 200, width: 100),
+        )
 ## Demo
             
 ![demo](art/pdf_flutter.gif)
