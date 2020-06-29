@@ -11,12 +11,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class PDF extends StatefulWidget {
-  const PDF._(
-      {this.file,
-      this.networkURL,
-      this.width = 150,
-      this.height = 250,
-      this.placeHolder});
+  const PDF._({
+    this.file,
+    this.networkURL,
+    this.assetsPath,
+    this.width = 150,
+    this.height = 250,
+    this.placeHolder,
+  });
 
   factory PDF.network(
     String filePath, {
@@ -38,14 +40,32 @@ class PDF extends StatefulWidget {
     Widget placeHolder,
   }) {
     return PDF._(
-        file: file, width: width, height: height, placeHolder: placeHolder);
+      file: file,
+      width: width,
+      height: height,
+      placeHolder: placeHolder,
+    );
+  }
+
+  factory PDF.assets(
+    String assetPath, {
+    double width = 150,
+    double height = 250,
+    Widget placeHolder,
+  }) {
+    return PDF._(
+        assetsPath: assetPath,
+        width: width,
+        height: height,
+        placeHolder: placeHolder);
   }
 
   final String networkURL;
+  final File file;
+  final String assetsPath;
   final double height;
   final double width;
   final Widget placeHolder;
-  final File file;
 
   @override
   _PDFState createState() => _PDFState();
@@ -68,25 +88,30 @@ class _PDFState extends State<PDF> {
       (await http.get(widget.networkURL)).bodyBytes;
 
   void loadPdf() async {
-    if(widget.networkURL!=null){
+    if (widget.networkURL != null) {
       await loadNetworkPDF();
-    }
-
-    if(widget.file!=null){
+    } else if (widget.file != null) {
       await loadFile();
+    } else if (widget.assetsPath != null) {
+      await loadAssetPDF();
     }
-
     if (!mounted) return;
     setState(() {});
   }
 
-  Future<void> loadNetworkPDF() async{
+  Future<void> loadAssetPDF() async {
+    var asset = await PlatformAssetBundle().load(widget.assetsPath);
+    await (writeCounter(asset.buffer.asUint8List()));
+    path = (await _localFile).path;
+  }
+
+  Future<void> loadNetworkPDF() async {
     await writeCounter(await fetchPost());
     await existsFile();
     path = (await _localFile).path;
   }
 
-  Future<void> loadFile() async{
+  Future<void> loadFile() async {
     path = widget.file.path;
   }
 

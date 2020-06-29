@@ -20,4 +20,5 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/pdf/
   uses-material-design: true
