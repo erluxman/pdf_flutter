@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pdf_flutter/pdf_flutter.dart';
 
 void main() => runApp(PdfApp());
@@ -34,63 +33,70 @@ class _PDFListBodyState extends State<PDFListBody> {
   File localFile;
 
   @override
-  void initState() {
-    super.initState();
-    _init();
-  }
-
-  _init() async{
-    var file = await PlatformAssetBundle().load('assets/mySecertImage.png');
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
       children: <Widget>[
-        PDF.network(
-          'https://raw.githubusercontent.com/FlutterInThai/Dart-for-Flutter-Sheet-cheet/master/Dart-for-Flutter-Cheat-Sheet.pdf',
-          height: 200,
-          width: 100,
-          placeHolder:
-          Image.asset("assets/images/pdf.png", height: 200, width: 100),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        PDF.assets(
-          "assets/pdf/demo.pdf",
-          height: 200,
-          width: 100,
-          placeHolder:
-          Image.asset("assets/images/pdf.png", height: 200, width: 100),
+        Row(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Text("PDF.network(url)"),
+                PDF.network(
+                  'https://raw.githubusercontent.com/FlutterInThai/Dart-for-Flutter-Sheet-cheet/master/Dart-for-Flutter-Cheat-Sheet.pdf',
+                  height: 300,
+                  width: 150,
+                  placeHolder: Image.asset("assets/images/pdf.png",
+                      height: 200, width: 100),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Column(
+              children: <Widget>[
+                Text("PDF.assets(assetname)"),
+                PDF.assets(
+                  "assets/pdf/demo.pdf",
+                  height: 300,
+                  width: 150,
+                  placeHolder: Image.asset("assets/images/pdf.png",
+                      height: 200, width: 100),
+                ),
+              ],
+            ),
+          ],
         ),
         SizedBox(
           height: 10,
         ),
         localFile != null
-            ? PDF.file(
-          localFile,
-          height: 200,
-          width: 100,
-          placeHolder: Image.asset("assets/images/pdf.png",
-              height: 200, width: 100),
-        )
+            ? Column(
+                children: <Widget>[
+                  Text("PDF.file(fileName)"),
+                  PDF.file(
+                    localFile,
+                    height: 300,
+                    width: 200,
+                    placeHolder: Image.asset("assets/images/pdf.png",
+                        height: 200, width: 100),
+                  ),
+                ],
+              )
             : InkWell(
-          onTap: () async {
-            File file = await FilePicker.getFile(
-                allowedExtensions: ['pdf'],
-                type: FileType.custom
-            );
-            setState(() {
-              localFile = file;
-            });
-          },
-          child: Container(
-            height: 200,
-            width: 100,
-            child: Text("Select PDF from device"),
-          ),
-        )
+                onTap: () async {
+                  File file = await FilePicker.getFile(
+                      allowedExtensions: ['pdf'], type: FileType.custom);
+                  setState(() {
+                    localFile = file;
+                  });
+                },
+                child: Container(
+                  height: 200,
+                  width: 100,
+                  child: Text("Select PDF from device"),
+                ),
+              )
       ],
     );
   }
