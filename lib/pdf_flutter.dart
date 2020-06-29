@@ -10,25 +10,42 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
-//const MethodChannel('pdf_network');
 class PDF extends StatefulWidget {
-  const PDF._(this.filePath,
-      {this.width = 150, this.height = 250, this.placeHolder});
+  const PDF._(
+      {this.file,
+      this.networkURL,
+      this.width = 150,
+      this.height = 250,
+      this.placeHolder});
 
   factory PDF.network(
-      String filePath, {
-        double width = 150,
-        double height = 250,
-        Widget placeHolder,
-      }) {
-    return PDF._(filePath,
-        width: width, height: height, placeHolder: placeHolder);
+    String filePath, {
+    double width = 150,
+    double height = 250,
+    Widget placeHolder,
+  }) {
+    return PDF._(
+        networkURL: filePath,
+        width: width,
+        height: height,
+        placeHolder: placeHolder);
   }
 
-  final String filePath;
+  factory PDF.file(
+    File file, {
+    double width = 150,
+    double height = 250,
+    Widget placeHolder,
+  }) {
+    return PDF._(
+        file: file, width: width, height: height, placeHolder: placeHolder);
+  }
+
+  final String networkURL;
   final double height;
   final double width;
   final Widget placeHolder;
+  final File file;
 
   @override
   _PDFState createState() => _PDFState();
@@ -42,33 +59,35 @@ class _PDFState extends State<PDF> {
     return File('$path/${Uuid().toString()}.pdf');
   }
 
-  Future<File> writeCounter(Uint8List stream) async {
-    final file = await _localFile;
+  Future<File> writeCounter(Uint8List stream) async =>
+      (await _localFile).writeAsBytes(stream);
 
-    // Write the file
-    return file.writeAsBytes(stream);
-  }
+  Future<bool> existsFile() async => (await _localFile).exists();
 
-  Future<bool> existsFile() async {
-    final file = await _localFile;
-    return file.exists();
-  }
-
-  Future<Uint8List> fetchPost() async {
-    final response = await http.get(widget.filePath);
-    final responseJson = response.bodyBytes;
-
-    return responseJson;
-  }
+  Future<Uint8List> fetchPost() async =>
+      (await http.get(widget.networkURL)).bodyBytes;
 
   void loadPdf() async {
+    if(widget.networkURL!=null){
+      await loadNetworkPDF();
+    }
+
+    if(widget.file!=null){
+      await loadFile();
+    }
+
+    if (!mounted) return;
+    setState(() {});
+  }
+
+  Future<void> loadNetworkPDF() async{
     await writeCounter(await fetchPost());
     await existsFile();
     path = (await _localFile).path;
+  }
 
-    if (!mounted) return;
-
-    setState(() {});
+  Future<void> loadFile() async{
+    path = widget.file.path;
   }
 
   @override
@@ -83,24 +102,24 @@ class _PDFState extends State<PDF> {
         duration: Duration(milliseconds: 500),
         child: (path != null)
             ? Container(
-          height: widget.height,
-          width: widget.width,
-          child: PdfViewer(
-            filePath: path,
-          ),
-        )
-            : Container(
-          height: widget.height,
-          width: widget.width,
-          child: widget.placeHolder ??
-              Center(
-                child: Container(
-                  height: min(widget.height, widget.width),
-                  width: min(widget.height, widget.width),
-                  child: CircularProgressIndicator(),
+                height: widget.height,
+                width: widget.width,
+                child: PdfViewer(
+                  filePath: path,
                 ),
-              ),
-        ));
+              )
+            : Container(
+                height: widget.height,
+                width: widget.width,
+                child: widget.placeHolder ??
+                    Center(
+                      child: Container(
+                        height: min(widget.height, widget.width),
+                        width: min(widget.height, widget.width),
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+              ));
   }
 }
 
