@@ -1,6 +1,6 @@
 name: pdf_flutter
-description: PDF loading Widget for Flutter
-version: 1.0.2
+description: Displaying PDF from Network, File and assets easily like we display Image in Flutter Widget.
+version: 1.0.3
 author: Laxman Bhattarai (erluxman) <erluxman@gmail.com>
 homepage: https://github.com/erluxman/pdf_flutter
 
