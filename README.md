@@ -1,6 +1,9 @@
 # pdf_flutter
 [![pub package](https://img.shields.io/pub/v/pdf_flutter.svg)](https://pub.dartlang.org/packages/pdf_flutter)
 
+Inspired by [Pdf_Viewer_Plugin](https://github.com/lubritto/Pdf_Viewer_Plugin) 😇
+Wrapped around [AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer) on Android. 🙏🏼
+
 #### 1. Add `pdf_flutter`on `pubspec.yml` 
 
     dependencies:
@@ -28,7 +31,6 @@ Add this on `ios/Runner/info.plist`:
             fileName,
             height: 200,
             width: 100,
-            placeHolder: Image.asset("assets/images/pdf.png", height: 200, width: 100),
         )
         
         //Load PDF from assets
@@ -36,7 +38,6 @@ Add this on `ios/Runner/info.plist`:
             "assets/pdf/demo.pdf",
             height: 200,
             width: 100,
-            placeHolder: Image.asset("assets/images/pdf.png", height: 200, width: 100),
         )
 ## Demo
             
