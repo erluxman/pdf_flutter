@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -106,8 +107,9 @@ class _PDFState extends State<PDF> {
   }
 
   Future<void> loadNetworkPDF() async {
-    await writeCounter(await fetchPost());
-    await existsFile();
+    File fetchedFile =
+        await DefaultCacheManager().getSingleFile(widget.networkURL);
+    await(writeCounter(fetchedFile.readAsBytesSync()));
     path = (await _localFile).path;
   }
 
@@ -124,13 +126,16 @@ class _PDFState extends State<PDF> {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-        duration: Duration(milliseconds: 500),
+        duration: Duration(milliseconds: 200),
         child: (path != null)
             ? Container(
                 height: widget.height,
                 width: widget.width,
                 child: PdfViewer(
                   filePath: path,
+                  onPdfViewerCreated: (){
+                    print("PDF view created");
+                  },
                 ),
               )
             : Container(
