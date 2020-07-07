@@ -18,7 +18,7 @@ Add this on `ios/Runner/info.plist`:
 
 ### 3. Start Using 
 
-#### Load PDF from network
+#### Load PDF from network (caches PDF from network)
 
         PDF.network(
                 'https://raw.githubusercontent.com/FlutterInThai/Dart-for-Flutter-Sheet-cheet/master/Dart-for-Flutter-Cheat-Sheet.pdf',
