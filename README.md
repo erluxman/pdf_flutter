@@ -44,4 +44,4 @@ Add this on `ios/Runner/info.plist`:
         )
 
 ## Demo           
-![demo](art/pdf_flutter.gif)
+![demo](art/pdf_flutter_updated.gif)
