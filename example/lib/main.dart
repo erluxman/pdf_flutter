@@ -42,7 +42,7 @@ class _PDFListBodyState extends State<PDFListBody> {
               children: <Widget>[
                 Text("PDF.network(url)"),
                 PDF.network(
-                  'https://raw.githubusercontent.com/FlutterInThai/Dart-for-Flutter-Sheet-cheet/master/Dart-for-Flutter-Cheat-Sheet.pdf',
+                  'https://raw.githubusercontent.com/aparneshgaurav/readArea/master/core%20java%20and%20peripheral/Head%20First%20Java%2C%202nd%20Edition.pdf',
                   height: 300,
                   width: 150,
                   placeHolder: Image.asset("assets/images/pdf.png",
