@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:uuid/uuid.dart';
 
 class PDF extends StatefulWidget {
   const PDF._({
@@ -77,8 +76,24 @@ class _PDFState extends State<PDF> {
 
   Future<File> get _localFile async {
     final String path = (await getApplicationDocumentsDirectory()).path;
-    return File('$path/${Uuid().toString()}.pdf');
+    String fileName = getFileName();
+    return File('$path/$fileName.pdf');
   }
+
+  String getFileName() {
+    return getLetterAndDigits(widget.assetsPath ?? widget.networkURL);
+  }
+
+  String getLetterAndDigits(String input) {
+    var selectedChars =
+        input.runes.where((element) => isLetter(element) || isDigit(element));
+    return String.fromCharCodes(selectedChars);
+  }
+
+  bool isLetter(int input) =>
+      (input >= 65 && input <= 90) || (input >= 97 && input <= 122);
+
+  bool isDigit(int input) => (input >= 48 && input <= 57);
 
   Future<File> writeCounter(Uint8List stream) async =>
       (await _localFile).writeAsBytes(stream);
@@ -109,7 +124,7 @@ class _PDFState extends State<PDF> {
   Future<void> loadNetworkPDF() async {
     File fetchedFile =
         await DefaultCacheManager().getSingleFile(widget.networkURL);
-    await(writeCounter(fetchedFile.readAsBytesSync()));
+    await (writeCounter(fetchedFile.readAsBytesSync()));
     path = (await _localFile).path;
   }
 
@@ -133,7 +148,7 @@ class _PDFState extends State<PDF> {
                 width: widget.width,
                 child: PdfViewer(
                   filePath: path,
-                  onPdfViewerCreated: (){
+                  onPdfViewerCreated: () {
                     print("PDF view created");
                   },
                 ),
