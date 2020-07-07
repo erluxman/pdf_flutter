@@ -42,9 +42,9 @@ class _PDFListBodyState extends State<PDFListBody> {
               children: <Widget>[
                 Text("PDF.network(url)"),
                 PDF.network(
-                  'https://raw.githubusercontent.com/aparneshgaurav/readArea/master/core%20java%20and%20peripheral/Head%20First%20Java%2C%202nd%20Edition.pdf',
+                  'https://google-developer-training.github.io/android-developer-fundamentals-course-concepts/en/android-developer-fundamentals-course-concepts-en.pdf',
                   height: 300,
-                  width: 150,
+                  width: 200,
                   placeHolder: Image.asset("assets/images/pdf.png",
                       height: 200, width: 100),
                 ),
@@ -59,7 +59,7 @@ class _PDFListBodyState extends State<PDFListBody> {
                 PDF.assets(
                   "assets/pdf/demo.pdf",
                   height: 300,
-                  width: 150,
+                  width: 200,
                   placeHolder: Image.asset("assets/images/pdf.png",
                       height: 200, width: 100),
                 ),
@@ -91,10 +91,22 @@ class _PDFListBodyState extends State<PDFListBody> {
                     localFile = file;
                   });
                 },
-                child: Container(
-                  height: 200,
-                  width: 100,
-                  child: Text("Select PDF from device"),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.cyan,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Select PDF from device",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 45, color: Colors.white),
+                      ),
+                    ),
+                  ),
                 ),
               )
       ],

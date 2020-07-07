@@ -1,3 +1,4 @@
+#### 1.1.0  Supports caching of network PDF
 #### 1.0.3  Improved description
 #### 1.0.2  Improved changelog
 #### 1.0.1  Added support for PDF.file() and PDF.assets()
