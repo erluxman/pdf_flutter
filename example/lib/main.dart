@@ -37,6 +37,7 @@ class _PDFListBodyState extends State<PDFListBody> {
     return Column(
       children: <Widget>[
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Column(
               children: <Widget>[
@@ -44,7 +45,7 @@ class _PDFListBodyState extends State<PDFListBody> {
                 PDF.network(
                   'https://google-developer-training.github.io/android-developer-fundamentals-course-concepts/en/android-developer-fundamentals-course-concepts-en.pdf',
                   height: 300,
-                  width: 200,
+                  width: 150,
                   placeHolder: Image.asset("assets/images/pdf.png",
                       height: 200, width: 100),
                 ),
@@ -59,7 +60,7 @@ class _PDFListBodyState extends State<PDFListBody> {
                 PDF.assets(
                   "assets/pdf/demo.pdf",
                   height: 300,
-                  width: 200,
+                  width: 150,
                   placeHolder: Image.asset("assets/images/pdf.png",
                       height: 200, width: 100),
                 ),
