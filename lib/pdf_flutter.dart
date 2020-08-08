@@ -20,19 +20,25 @@ class PDF extends StatefulWidget {
     this.placeHolder,
   });
 
+  /// Load PDF from network
+  /// url : the URL of pdf file
+  /// placeholder : Widget to show when pdf is loading from network.
   factory PDF.network(
-    String filePath, {
+    String url, {
     double width = 150,
     double height = 250,
     Widget placeHolder,
   }) {
     return PDF._(
-        networkURL: filePath,
+        networkURL: url,
         width: width,
         height: height,
         placeHolder: placeHolder);
   }
 
+  /// Load PDF from network
+  /// file : File object that represents the PDF file from device.
+  /// placeholder : Widget to show when pdf is loading from network.
   factory PDF.file(
     File file, {
     double width = 150,
@@ -47,6 +53,9 @@ class PDF extends StatefulWidget {
     );
   }
 
+  /// Load PDF from network
+  /// assetPath : path like : assets/pdf/demo.pdf
+  /// placeholder : Widget to show when pdf is loading from network.
   factory PDF.assets(
     String assetPath, {
     double width = 150,
