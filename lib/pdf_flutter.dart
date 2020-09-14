@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
@@ -18,22 +19,25 @@ class PDF extends StatefulWidget {
     this.width = 150,
     this.height = 250,
     this.placeHolder,
+    this.hitTestBehavior,
   });
 
   /// Load PDF from network
   /// url : the URL of pdf file
   /// placeholder : Widget to show when pdf is loading from network.
-  factory PDF.network(
-    String url, {
+  factory PDF.network(String url, {
     double width = 150,
     double height = 250,
     Widget placeHolder,
+    PlatformViewHitTestBehavior hitTestBehavior,
   }) {
     return PDF._(
-        networkURL: url,
-        width: width,
-        height: height,
-        placeHolder: placeHolder);
+      networkURL: url,
+      width: width,
+      height: height,
+      placeHolder: placeHolder,
+      hitTestBehavior: hitTestBehavior,
+    );
   }
 
   /// Load PDF from network
@@ -44,12 +48,14 @@ class PDF extends StatefulWidget {
     double width = 150,
     double height = 250,
     Widget placeHolder,
+    PlatformViewHitTestBehavior hitTestBehavior,
   }) {
     return PDF._(
       file: file,
       width: width,
       height: height,
       placeHolder: placeHolder,
+      hitTestBehavior: hitTestBehavior,
     );
   }
 
@@ -61,12 +67,15 @@ class PDF extends StatefulWidget {
     double width = 150,
     double height = 250,
     Widget placeHolder,
+    PlatformViewHitTestBehavior hitTestBehavior,
   }) {
     return PDF._(
-        assetsPath: assetPath,
-        width: width,
-        height: height,
-        placeHolder: placeHolder);
+      assetsPath: assetPath,
+      width: width,
+      height: height,
+      placeHolder: placeHolder,
+      hitTestBehavior: hitTestBehavior,
+    );
   }
 
   final String networkURL;
@@ -75,6 +84,7 @@ class PDF extends StatefulWidget {
   final double height;
   final double width;
   final Widget placeHolder;
+  final PlatformViewHitTestBehavior hitTestBehavior;
 
   @override
   _PDFState createState() => _PDFState();
@@ -160,6 +170,7 @@ class _PDFState extends State<PDF> {
                   onPdfViewerCreated: () {
                     print("PDF view created");
                   },
+                  hitTestBehavior: widget.hitTestBehavior,
                 ),
               )
             : Container(
@@ -184,10 +195,12 @@ class PdfViewer extends StatefulWidget {
     Key key,
     this.filePath,
     this.onPdfViewerCreated,
+    this.hitTestBehavior,
   }) : super(key: key);
 
   final String filePath;
   final PdfViewerCreatedCallback onPdfViewerCreated;
+  final PlatformViewHitTestBehavior hitTestBehavior;
 
   @override
   _PdfViewerState createState() => _PdfViewerState();
@@ -204,6 +217,7 @@ class _PdfViewerState extends State<PdfViewer> {
         },
         creationParamsCodec: StandardMessageCodec(),
         onPlatformViewCreated: _onPlatformViewCreated,
+        hitTestBehavior: widget.hitTestBehavior,
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return UiKitView(
@@ -213,6 +227,7 @@ class _PdfViewerState extends State<PdfViewer> {
         },
         creationParamsCodec: const StandardMessageCodec(),
         onPlatformViewCreated: _onPlatformViewCreated,
+        hitTestBehavior: widget.hitTestBehavior,
       );
     }
 
