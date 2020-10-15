@@ -43,5 +43,22 @@ Add this on `ios/Runner/info.plist`:
             width: 100,
         )
 
+#### For Production
+    Here are the steps to fix:
+        1. Add proguard-rules.pro file if its not already there
+        
+<img src="https://user-images.githubusercontent.com/2768159/91779534-e288fd00-ebc3-11ea-9c6f-d3e3a9d0922c.png">
+
+        2. Inside of the proguard-rules.pro file put this:
+            -keep class com.shockwave.**
+            -keepclassmembers class com.shockwave.** { *; }
+            
+        3.In app/build.gradle add this:
+<img src="https://user-images.githubusercontent.com/2768159/91779653-37c50e80-ebc4-11ea-8fbb-22d5c8e5a9ed.png">
+
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
 ## Demo           
 ![demo](art/pdf_flutter_updated.gif)
