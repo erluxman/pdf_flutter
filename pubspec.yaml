@@ -10,11 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  pedantic: ^1.9.0
-  path_provider: ^1.6.11
-  flutter_cache_manager: ^1.4.1
-  http: ^0.12.1
-  uuid: ^2.1.0
+  pedantic: ^1.9.2
+  path_provider: ^1.6.24
+  flutter_cache_manager: ^2.0.0
+  http: ^0.12.2
+  uuid: ^2.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
