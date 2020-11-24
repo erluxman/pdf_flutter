@@ -29,7 +29,7 @@ class PDF extends StatefulWidget {
     double width = 150,
     double height = 250,
     Widget placeHolder,
-    PlatformViewHitTestBehavior hitTestBehavior,
+    PlatformViewHitTestBehavior hitTestBehavior = PlatformViewHitTestBehavior.opaque,
   }) {
     return PDF._(
       networkURL: url,
@@ -48,7 +48,7 @@ class PDF extends StatefulWidget {
     double width = 150,
     double height = 250,
     Widget placeHolder,
-    PlatformViewHitTestBehavior hitTestBehavior,
+    PlatformViewHitTestBehavior hitTestBehavior = PlatformViewHitTestBehavior.opaque,
   }) {
     return PDF._(
       file: file,
@@ -67,7 +67,7 @@ class PDF extends StatefulWidget {
     double width = 150,
     double height = 250,
     Widget placeHolder,
-    PlatformViewHitTestBehavior hitTestBehavior,
+    PlatformViewHitTestBehavior hitTestBehavior = PlatformViewHitTestBehavior.opaque,
   }) {
     return PDF._(
       assetsPath: assetPath,
