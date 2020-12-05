@@ -100,7 +100,8 @@ class _PDFState extends State<PDF> {
   }
 
   String getFileName() {
-    return getLetterAndDigits(widget.assetsPath ?? widget.networkURL);
+    final baseUrl = widget.networkURL.split('?'); //S3 PresignedURL too long to store, remove the params from url and only use base up to document name
+    return getLetterAndDigits(widget.assetsPath ?? baseUrl[0]);
   }
 
   String getLetterAndDigits(String input) {
