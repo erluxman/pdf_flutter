@@ -112,7 +112,7 @@ class _PDFState extends State<PDF> {
       getLetterAndDigits(widget.assetsPath ?? widget.networkURL)
     }
     else{
-      return getLetterAndDigits(widget.assetsPath ?? widget.networkURL);
+      return getLetterAndDigits(widget.assetsPath ?? widget.filename);
     }
 
   }
