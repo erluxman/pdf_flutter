@@ -20,6 +20,7 @@ class PDF extends StatefulWidget {
     this.height = 250,
     this.placeHolder,
     this.hitTestBehavior,
+    this.filename,
   });
 
   /// Load PDF from network
@@ -30,6 +31,7 @@ class PDF extends StatefulWidget {
     double height = 250,
     Widget placeHolder,
     PlatformViewHitTestBehavior hitTestBehavior = PlatformViewHitTestBehavior.opaque,
+    String filename
   }) {
     return PDF._(
       networkURL: url,
@@ -37,6 +39,7 @@ class PDF extends StatefulWidget {
       height: height,
       placeHolder: placeHolder,
       hitTestBehavior: hitTestBehavior,
+      filename: filename,
     );
   }
 
@@ -49,6 +52,7 @@ class PDF extends StatefulWidget {
     double height = 250,
     Widget placeHolder,
     PlatformViewHitTestBehavior hitTestBehavior = PlatformViewHitTestBehavior.opaque,
+    String filename
   }) {
     return PDF._(
       file: file,
@@ -56,6 +60,7 @@ class PDF extends StatefulWidget {
       height: height,
       placeHolder: placeHolder,
       hitTestBehavior: hitTestBehavior,
+      filename: filename
     );
   }
 
@@ -68,6 +73,7 @@ class PDF extends StatefulWidget {
     double height = 250,
     Widget placeHolder,
     PlatformViewHitTestBehavior hitTestBehavior = PlatformViewHitTestBehavior.opaque,
+    String filename
   }) {
     return PDF._(
       assetsPath: assetPath,
@@ -75,6 +81,7 @@ class PDF extends StatefulWidget {
       height: height,
       placeHolder: placeHolder,
       hitTestBehavior: hitTestBehavior,
+      filename: filename
     );
   }
 
@@ -85,6 +92,7 @@ class PDF extends StatefulWidget {
   final double width;
   final Widget placeHolder;
   final PlatformViewHitTestBehavior hitTestBehavior;
+  final String filename;
 
   @override
   _PDFState createState() => _PDFState();
@@ -100,8 +108,13 @@ class _PDFState extends State<PDF> {
   }
 
   String getFileName() {
-    final baseUrl = widget.networkURL.split('?'); //S3 PresignedURL too long to store, remove the params from url and only use base up to document name
-    return getLetterAndDigits(widget.assetsPath ?? baseUrl[0]);
+    if(widget.filename?.isEmpty ?? true){
+      getLetterAndDigits(widget.assetsPath ?? widget.networkURL)
+    }
+    else{
+      return getLetterAndDigits(widget.assetsPath ?? widget.networkURL);
+    }
+
   }
 
   String getLetterAndDigits(String input) {
