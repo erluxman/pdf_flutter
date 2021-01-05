@@ -15,8 +15,8 @@ class PDF extends StatefulWidget {
     this.file,
     this.networkURL,
     this.assetsPath,
-    this.width = 150,
-    this.height = 250,
+    this.width = double.maxFinite,
+    this.height = double.maxFinite,
     this.placeHolder,
   });
 
@@ -25,8 +25,8 @@ class PDF extends StatefulWidget {
   /// placeholder : Widget to show when pdf is loading from network.
   factory PDF.network(
     String url, {
-    double width = 150,
-    double height = 250,
+    double width = double.maxFinite,
+    double height = double.maxFinite,
     Widget placeHolder,
   }) {
     return PDF._(
@@ -41,8 +41,8 @@ class PDF extends StatefulWidget {
   /// placeholder : [Widget] to show when pdf is loading from network.
   factory PDF.file(
     File file, {
-    double width = 150,
-    double height = 250,
+    double width = double.maxFinite,
+    double height = double.maxFinite,
     Widget placeHolder,
   }) {
     return PDF._(
@@ -56,10 +56,10 @@ class PDF extends StatefulWidget {
   /// Load PDF from network
   /// assetPath : path like : `assets/pdf/demo.pdf`
   /// placeholder : Widget to show when pdf is loading from network.
-  factory PDF.assets(
+  factory PDF.asset(
     String assetPath, {
-    double width = 150,
-    double height = 250,
+    double width = double.maxFinite,
+    double height = double.maxFinite,
     Widget placeHolder,
   }) {
     return PDF._(
@@ -117,7 +117,6 @@ class _PDFState extends State<PDF> {
     } else if (widget.assetsPath != null) {
       await loadAssetPDF();
     }
-    if (!mounted) return;
     setState(() {});
   }
 
@@ -167,7 +166,12 @@ class _PDFState extends State<PDF> {
                     child: Container(
                       height: min(widget.height, widget.width),
                       width: min(widget.height, widget.width),
-                      child: const CircularProgressIndicator(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const CircularProgressIndicator(),
+                        ],
+                      ),
                     ),
                   ),
             ),
