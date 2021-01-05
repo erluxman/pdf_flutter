@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_flutter/pdf_flutter.dart';
@@ -13,9 +12,9 @@ class PdfApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: AppBar(
-            title: Text("pdf_flutter demo"),
+            title: const Text("pdf_flutter demo"),
           ),
-          body: PDFListBody(),
+          body: const PDFListBody(),
         ));
   }
 }
@@ -41,7 +40,7 @@ class _PDFListBodyState extends State<PDFListBody> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                Text("PDF.network(url)"),
+                const Text("PDF.network(url)"),
                 PDF.network(
                   'https://google-developer-training.github.io/android-developer-fundamentals-course-concepts/en/android-developer-fundamentals-course-concepts-en.pdf',
                   height: 300,
@@ -51,12 +50,12 @@ class _PDFListBodyState extends State<PDFListBody> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Column(
               children: <Widget>[
-                Text("PDF.assets(assetname)"),
+                const Text("PDF.assets(assetname)"),
                 PDF.assets(
                   "assets/pdf/demo.pdf",
                   height: 300,
@@ -68,13 +67,13 @@ class _PDFListBodyState extends State<PDFListBody> {
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         localFile != null
             ? Column(
                 children: <Widget>[
-                  Text("PDF.file(fileName)"),
+                  const Text("PDF.file(fileName)"),
                   PDF.file(
                     localFile,
                     height: 300,
@@ -86,10 +85,10 @@ class _PDFListBodyState extends State<PDFListBody> {
               )
             : InkWell(
                 onTap: () async {
-                  File file = await FilePicker.getFile(
+                  final file = await FilePicker.platform.pickFiles(
                       allowedExtensions: ['pdf'], type: FileType.custom);
                   setState(() {
-                    localFile = file;
+                    localFile = File(file.files[0].path);
                   });
                 },
                 child: Padding(
@@ -100,7 +99,7 @@ class _PDFListBodyState extends State<PDFListBody> {
                       color: Colors.cyan,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Select PDF from device",
                         textAlign: TextAlign.center,
