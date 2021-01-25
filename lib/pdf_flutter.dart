@@ -15,8 +15,8 @@ class PDF extends StatefulWidget {
     this.file,
     this.networkURL,
     this.assetsPath,
-    this.width = 150,
-    this.height = 250,
+    this.width = double.maxFinite,
+    this.height = double.maxFinite,
     this.placeHolder,
   });
 
@@ -25,8 +25,8 @@ class PDF extends StatefulWidget {
   /// placeholder : Widget to show when pdf is loading from network.
   factory PDF.network(
     String url, {
-    double width = 150,
-    double height = 250,
+    double width = double.maxFinite,
+    double height = double.maxFinite,
     Widget placeHolder,
   }) {
     return PDF._(
@@ -37,12 +37,12 @@ class PDF extends StatefulWidget {
   }
 
   /// Load PDF from network
-  /// file : File object that represents the PDF file from device.
-  /// placeholder : Widget to show when pdf is loading from network.
+  /// file : [File] object that represents the PDF file from device.
+  /// placeholder : [Widget] to show when pdf is loading from network.
   factory PDF.file(
     File file, {
-    double width = 150,
-    double height = 250,
+    double width = double.maxFinite,
+    double height = double.maxFinite,
     Widget placeHolder,
   }) {
     return PDF._(
@@ -54,12 +54,12 @@ class PDF extends StatefulWidget {
   }
 
   /// Load PDF from network
-  /// assetPath : path like : assets/pdf/demo.pdf
+  /// assetPath : path like : `assets/pdf/demo.pdf`
   /// placeholder : Widget to show when pdf is loading from network.
-  factory PDF.assets(
+  factory PDF.asset(
     String assetPath, {
-    double width = 150,
-    double height = 250,
+    double width = double.maxFinite,
+    double height = double.maxFinite,
     Widget placeHolder,
   }) {
     return PDF._(
@@ -84,25 +84,22 @@ class _PDFState extends State<PDF> {
   String path;
 
   Future<File> get _localFile async {
-    final String path = (await getApplicationDocumentsDirectory()).path;
-    String fileName = getFileName();
+    final path = (await getApplicationDocumentsDirectory()).path;
+    final fileName = getFileName();
     return File('$path/$fileName.pdf');
   }
 
   String getFileName() {
-    return getLetterAndDigits(widget.assetsPath ?? widget.networkURL);
+    var input;
+    if (widget.assetsPath != null) {
+      input = widget.assetsPath;
+    } else {
+      final splitLength = widget.networkURL.split('/').length;
+      input = widget.networkURL.split('/')[splitLength - 1];
+    }
+    final result = input.replaceAll(RegExp(r'[^a-zA-Z0-9]'), "");
+    return result;
   }
-
-  String getLetterAndDigits(String input) {
-    var selectedChars =
-        input.runes.where((element) => isLetter(element) || isDigit(element));
-    return String.fromCharCodes(selectedChars);
-  }
-
-  bool isLetter(int input) =>
-      (input >= 65 && input <= 90) || (input >= 97 && input <= 122);
-
-  bool isDigit(int input) => (input >= 48 && input <= 57);
 
   Future<File> writeCounter(Uint8List stream) async =>
       (await _localFile).writeAsBytes(stream);
@@ -120,18 +117,17 @@ class _PDFState extends State<PDF> {
     } else if (widget.assetsPath != null) {
       await loadAssetPDF();
     }
-    if (!mounted) return;
     setState(() {});
   }
 
   Future<void> loadAssetPDF() async {
-    var asset = await PlatformAssetBundle().load(widget.assetsPath);
+    final asset = await PlatformAssetBundle().load(widget.assetsPath);
     await (writeCounter(asset.buffer.asUint8List()));
     path = (await _localFile).path;
   }
 
   Future<void> loadNetworkPDF() async {
-    File fetchedFile =
+    final fetchedFile =
         await DefaultCacheManager().getSingleFile(widget.networkURL);
     await (writeCounter(fetchedFile.readAsBytesSync()));
     path = (await _localFile).path;
@@ -150,33 +146,40 @@ class _PDFState extends State<PDF> {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-        duration: Duration(milliseconds: 200),
-        child: (path != null)
-            ? Container(
-                height: widget.height,
-                width: widget.width,
-                child: PdfViewer(
-                  filePath: path,
-                  onPdfViewerCreated: () {
-                    print("PDF view created");
-                  },
-                ),
-              )
-            : Container(
-                height: widget.height,
-                width: widget.width,
-                child: widget.placeHolder ??
-                    Center(
-                      child: Container(
-                        height: min(widget.height, widget.width),
-                        width: min(widget.height, widget.width),
-                        child: CircularProgressIndicator(),
+      duration: const Duration(milliseconds: 200),
+      child: (path != null)
+          ? Container(
+              height: widget.height,
+              width: widget.width,
+              child: PdfViewer(
+                filePath: path,
+                onPdfViewerCreated: () {
+                  debugPrint("PDF view created");
+                },
+              ),
+            )
+          : Container(
+              height: widget.height,
+              width: widget.width,
+              child: widget.placeHolder ??
+                  Center(
+                    child: Container(
+                      height: min(widget.height, widget.width),
+                      width: min(widget.height, widget.width),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const CircularProgressIndicator(),
+                        ],
                       ),
                     ),
-              ));
+                  ),
+            ),
+    );
   }
 }
 
+// ignore: prefer_generic_function_type_aliases
 typedef void PdfViewerCreatedCallback();
 
 class PdfViewer extends StatefulWidget {
@@ -202,7 +205,7 @@ class _PdfViewerState extends State<PdfViewer> {
         creationParams: <String, dynamic>{
           'filePath': widget.filePath,
         },
-        creationParamsCodec: StandardMessageCodec(),
+        creationParamsCodec: const StandardMessageCodec(),
         onPlatformViewCreated: _onPlatformViewCreated,
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {

@@ -1,0 +1,33 @@
+include: package:pedantic/analysis_options.yaml
+# Not happy with the default? Customize the rules depending on your needs.
+# Here are some examples:
+linter:
+  rules:
+    prefer_single_quotes: false
+    # Good packages document everything
+    public_member_api_docs: false
+
+    # Blindly follow the Flutter code style, which prefers types everywhere
+    always_specify_types: false
+
+    # Back to the 80s
+    lines_longer_than_120_chars: true
+
+    #prefer relative imports instead of absolute
+    prefer_relative_imports: true
+
+    # Use parameter order as in json response
+    always_put_required_named_parameters_first: true
+
+    # Util classes are awesome!
+    avoid_classes_with_only_static_members: false
+
+    prefer_const_declarations: true
+
+    prefer_const_constructors: true
+
+    use_rethrow_when_possible: true
+
+    unnecessary_null_in_if_null_operators: true
+
+    avoid_print: true
