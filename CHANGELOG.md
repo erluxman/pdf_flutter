@@ -1,3 +1,4 @@
+#### 1.1.4  Upgrade dependencies
 #### 1.1.3  Fixing bug on release mode
 #### 1.1.2  Update README
 #### 1.1.1  Update README
