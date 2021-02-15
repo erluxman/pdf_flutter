@@ -97,7 +97,7 @@ class _PDFState extends State<PDF> {
       final splitLength = widget.networkURL.split('/').length;
       input = widget.networkURL.split('/')[splitLength - 1];
     }
-    final result = input.replaceAll(RegExp(r'[^a-zA-Z0-9]'), "");
+    final result = input.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '');
     return result;
   }
 
@@ -154,7 +154,7 @@ class _PDFState extends State<PDF> {
               child: PdfViewer(
                 filePath: path,
                 onPdfViewerCreated: () {
-                  debugPrint("PDF view created");
+                  debugPrint('PDF view created');
                 },
               ),
             )
