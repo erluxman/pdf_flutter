@@ -1,3 +1,4 @@
+#### 1.1.5  Upgrade dependencies and remove deprecations in example app
 #### 1.1.4  Upgrade dependencies
 #### 1.1.3  Fixing bug on release mode
 #### 1.1.2  Update README
@@ -7,6 +8,4 @@
 #### 1.0.2  Improved changelog
 #### 1.0.1  Added support for PDF.file() and PDF.assets()
 #### 1.0.0  Added homepage
-#### 0.0.1
-
-* TODO: Describe initial release.
+#### 0.0.1  Initial release
