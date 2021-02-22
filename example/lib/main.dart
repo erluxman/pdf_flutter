@@ -77,7 +77,7 @@ class _PDFListBodyState extends State<PDFListBody> {
                       ),
                     );
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    Scaffold.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Failed to load Picked file'),
                       ),
