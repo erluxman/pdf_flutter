@@ -27,7 +27,7 @@ class PDF extends StatefulWidget {
     String url, {
     double width = double.maxFinite,
     double height = double.maxFinite,
-    Widget placeHolder,
+    Widget? placeHolder,
   }) {
     return PDF._(
         networkURL: url,
@@ -43,7 +43,7 @@ class PDF extends StatefulWidget {
     File file, {
     double width = double.maxFinite,
     double height = double.maxFinite,
-    Widget placeHolder,
+    Widget? placeHolder,
   }) {
     return PDF._(
       file: file,
@@ -60,7 +60,7 @@ class PDF extends StatefulWidget {
     String assetPath, {
     double width = double.maxFinite,
     double height = double.maxFinite,
-    Widget placeHolder,
+    Widget? placeHolder,
   }) {
     return PDF._(
         assetsPath: assetPath,
@@ -69,19 +69,19 @@ class PDF extends StatefulWidget {
         placeHolder: placeHolder);
   }
 
-  final String networkURL;
-  final File file;
-  final String assetsPath;
+  final String? networkURL;
+  final File? file;
+  final String? assetsPath;
   final double height;
   final double width;
-  final Widget placeHolder;
+  final Widget? placeHolder;
 
   @override
   _PDFState createState() => _PDFState();
 }
 
 class _PDFState extends State<PDF> {
-  String path;
+  String? path;
 
   Future<File> get _localFile async {
     final path = (await getApplicationDocumentsDirectory()).path;
@@ -94,8 +94,13 @@ class _PDFState extends State<PDF> {
     if (widget.assetsPath != null) {
       input = widget.assetsPath;
     } else {
-      final splitLength = widget.networkURL.split('/').length;
-      input = widget.networkURL.split('/')[splitLength - 1];
+      if (widget.networkURL != null) {
+        final splitLength = widget.networkURL!.split('/').length;
+        input = widget.networkURL!.split('/')[splitLength - 1];
+      } else {
+        debugPrint(
+            'Cannot get filename because networkURL and assetsPath is null.');
+      }
     }
     final result = input.replaceAll(RegExp(r'[^a-zA-Z0-9]'), "");
     return result;
@@ -106,8 +111,14 @@ class _PDFState extends State<PDF> {
 
   Future<bool> existsFile() async => (await _localFile).exists();
 
-  Future<Uint8List> fetchPost() async =>
-      (await http.get(widget.networkURL)).bodyBytes;
+  Future<Uint8List?> fetchPost() async {
+    if (widget.networkURL != null) {
+      var uri = Uri.http(widget.networkURL!, '');
+      return (await http.get(uri)).bodyBytes;
+    } else {
+      debugPrint('Cannot fetch post because networkURL is null.');
+    }
+  }
 
   void loadPdf() async {
     if (widget.networkURL != null) {
@@ -121,20 +132,20 @@ class _PDFState extends State<PDF> {
   }
 
   Future<void> loadAssetPDF() async {
-    final asset = await PlatformAssetBundle().load(widget.assetsPath);
+    final asset = await PlatformAssetBundle().load(widget.assetsPath!);
     await (writeCounter(asset.buffer.asUint8List()));
     path = (await _localFile).path;
   }
 
   Future<void> loadNetworkPDF() async {
     final fetchedFile =
-        await DefaultCacheManager().getSingleFile(widget.networkURL);
+        await DefaultCacheManager().getSingleFile(widget.networkURL!);
     await (writeCounter(fetchedFile.readAsBytesSync()));
     path = (await _localFile).path;
   }
 
   Future<void> loadFile() async {
-    path = widget.file.path;
+    path = widget.file!.path;
   }
 
   @override
@@ -152,7 +163,7 @@ class _PDFState extends State<PDF> {
               height: widget.height,
               width: widget.width,
               child: PdfViewer(
-                filePath: path,
+                filePath: path!,
                 onPdfViewerCreated: () {
                   debugPrint("PDF view created");
                 },
@@ -184,13 +195,13 @@ typedef void PdfViewerCreatedCallback();
 
 class PdfViewer extends StatefulWidget {
   const PdfViewer({
-    Key key,
-    this.filePath,
+    Key? key,
+    required this.filePath,
     this.onPdfViewerCreated,
   }) : super(key: key);
 
   final String filePath;
-  final PdfViewerCreatedCallback onPdfViewerCreated;
+  final PdfViewerCreatedCallback? onPdfViewerCreated;
 
   @override
   _PdfViewerState createState() => _PdfViewerState();
@@ -225,7 +236,8 @@ class _PdfViewerState extends State<PdfViewer> {
   void _onPlatformViewCreated(int id) {
     if (widget.onPdfViewerCreated == null) {
       return;
+    } else {
+      widget.onPdfViewerCreated!();
     }
-    widget.onPdfViewerCreated();
   }
 }

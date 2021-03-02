@@ -9,13 +9,14 @@ class PdfApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          appBar: AppBar(
-            title: const Text("pdf_flutter demo"),
-          ),
-          body: PDFListBody(),
-        ));
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("pdf_flutter demo"),
+        ),
+        body: PDFListBody(),
+      ),
+    );
   }
 }
 
@@ -31,7 +32,7 @@ class _PDFListBodyState extends State<PDFListBody> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          RaisedButton(
+          ElevatedButton(
             child: const Text("Pdf from asset"),
             onPressed: () {
               _navigateToPage(
@@ -44,7 +45,7 @@ class _PDFListBodyState extends State<PDFListBody> {
               );
             },
           ),
-          RaisedButton(
+          ElevatedButton(
             child: const Text("Pdf from network"),
             onPressed: () {
               _navigateToPage(
@@ -57,16 +58,16 @@ class _PDFListBodyState extends State<PDFListBody> {
           ),
           Builder(
             builder: (context) {
-              return RaisedButton(
+              return ElevatedButton(
                 child: const Text("PDF from file"),
                 onPressed: () async {
                   final file = await FilePicker.platform.pickFiles(
                       allowedExtensions: ['pdf'], type: FileType.custom);
-                  if (file?.files[0]?.path != null) {
+                  if (file?.files[0].path != null) {
                     _navigateToPage(
                       title: "PDF from file",
                       child: PDF.file(
-                        File(file.files[0].path),
+                        File(file!.files[0].path!),
                       ),
                     );
                   } else {
@@ -85,7 +86,7 @@ class _PDFListBodyState extends State<PDFListBody> {
     );
   }
 
-  void _navigateToPage({String title, Widget child}) {
+  void _navigateToPage({required String title, required Widget child}) {
     Navigator.push(
       context,
       MaterialPageRoute(
