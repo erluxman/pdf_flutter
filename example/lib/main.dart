@@ -12,7 +12,7 @@ class PdfApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("pdf_flutter demo"),
+          title: const Text('pdf_flutter demo'),
         ),
         body: PDFListBody(),
       ),
@@ -33,51 +33,51 @@ class _PDFListBodyState extends State<PDFListBody> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ElevatedButton(
-            child: const Text("Pdf from asset"),
             onPressed: () {
               _navigateToPage(
-                title: "Pdf from asset",
+                title: 'Pdf from asset',
                 child: PDF.asset(
-                  "assets/pdf/demo.pdf",
-                  placeHolder: Image.asset("assets/images/pdf.png",
+                  'assets/pdf/demo.pdf',
+                  placeHolder: Image.asset('assets/images/pdf.png',
                       height: 200, width: 100),
                 ),
               );
             },
+            child: const Text('Pdf from asset'),
           ),
           ElevatedButton(
-            child: const Text("Pdf from network"),
             onPressed: () {
               _navigateToPage(
-                title: "Pdf from networkUrl",
+                title: 'Pdf from networkUrl',
                 child: PDF.network(
                   'https://google-developer-training.github.io/android-developer-fundamentals-course-concepts/en/android-developer-fundamentals-course-concepts-en.pdf',
                 ),
               );
             },
+            child: const Text('Pdf from network'),
           ),
           Builder(
             builder: (context) {
               return ElevatedButton(
-                child: const Text("PDF from file"),
                 onPressed: () async {
                   final file = await FilePicker.platform.pickFiles(
                       allowedExtensions: ['pdf'], type: FileType.custom);
                   if (file?.files[0].path != null) {
                     _navigateToPage(
-                      title: "PDF from file",
+                      title: 'PDF from file',
                       child: PDF.file(
                         File(file!.files[0].path!),
                       ),
                     );
                   } else {
-                    Scaffold.of(context).showSnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text("Failed to load Picked file"),
+                        content: Text('Failed to load Picked file'),
                       ),
                     );
                   }
                 },
+                child: const Text('PDF from file'),
               );
             },
           )

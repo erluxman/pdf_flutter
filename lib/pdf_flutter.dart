@@ -102,7 +102,7 @@ class _PDFState extends State<PDF> {
             'Cannot get filename because networkURL and assetsPath is null.');
       }
     }
-    final result = input.replaceAll(RegExp(r'[^a-zA-Z0-9]'), "");
+    final result = input.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '');
     return result;
   }
 
@@ -165,7 +165,7 @@ class _PDFState extends State<PDF> {
               child: PdfViewer(
                 filePath: path!,
                 onPdfViewerCreated: () {
-                  debugPrint("PDF view created");
+                  debugPrint('PDF view created');
                 },
               ),
             )
@@ -195,8 +195,8 @@ typedef void PdfViewerCreatedCallback();
 
 class PdfViewer extends StatefulWidget {
   const PdfViewer({
-    Key? key,
     required this.filePath,
+    Key? key,
     this.onPdfViewerCreated,
   }) : super(key: key);
 
