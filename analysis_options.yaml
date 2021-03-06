@@ -3,7 +3,6 @@ include: package:pedantic/analysis_options.yaml
 # Here are some examples:
 linter:
   rules:
-    prefer_single_quotes: false
     # Good packages document everything
     public_member_api_docs: false
 

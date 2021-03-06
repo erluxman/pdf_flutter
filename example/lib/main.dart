@@ -9,13 +9,14 @@ class PdfApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          appBar: AppBar(
-            title: const Text("pdf_flutter demo"),
-          ),
-          body: PDFListBody(),
-        ));
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('pdf_flutter demo'),
+        ),
+        body: PDFListBody(),
+      ),
+    );
   }
 }
 
@@ -31,52 +32,52 @@ class _PDFListBodyState extends State<PDFListBody> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          RaisedButton(
-            child: const Text("Pdf from asset"),
+          ElevatedButton(
             onPressed: () {
               _navigateToPage(
-                title: "Pdf from asset",
+                title: 'Pdf from asset',
                 child: PDF.asset(
-                  "assets/pdf/demo.pdf",
-                  placeHolder: Image.asset("assets/images/pdf.png",
+                  'assets/pdf/demo.pdf',
+                  placeHolder: Image.asset('assets/images/pdf.png',
                       height: 200, width: 100),
                 ),
               );
             },
+            child: const Text('Pdf from asset'),
           ),
-          RaisedButton(
-            child: const Text("Pdf from network"),
+          ElevatedButton(
             onPressed: () {
               _navigateToPage(
-                title: "Pdf from networkUrl",
+                title: 'Pdf from networkUrl',
                 child: PDF.network(
                   'https://google-developer-training.github.io/android-developer-fundamentals-course-concepts/en/android-developer-fundamentals-course-concepts-en.pdf',
                 ),
               );
             },
+            child: const Text('Pdf from network'),
           ),
           Builder(
             builder: (context) {
-              return RaisedButton(
-                child: const Text("PDF from file"),
+              return ElevatedButton(
                 onPressed: () async {
                   final file = await FilePicker.platform.pickFiles(
                       allowedExtensions: ['pdf'], type: FileType.custom);
-                  if (file?.files[0]?.path != null) {
+                  if (file?.files[0].path != null) {
                     _navigateToPage(
-                      title: "PDF from file",
+                      title: 'PDF from file',
                       child: PDF.file(
-                        File(file.files[0].path),
+                        File(file!.files[0].path!),
                       ),
                     );
                   } else {
-                    Scaffold.of(context).showSnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text("Failed to load Picked file"),
+                        content: Text('Failed to load Picked file'),
                       ),
                     );
                   }
                 },
+                child: const Text('PDF from file'),
               );
             },
           )
@@ -85,7 +86,7 @@ class _PDFListBodyState extends State<PDFListBody> {
     );
   }
 
-  void _navigateToPage({String title, Widget child}) {
+  void _navigateToPage({required String title, required Widget child}) {
     Navigator.push(
       context,
       MaterialPageRoute(
