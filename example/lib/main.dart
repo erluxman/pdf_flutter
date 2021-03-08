@@ -33,13 +33,17 @@ class _PDFListBodyState extends State<PDFListBody> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ElevatedButton(
+            child: const Text('Pdf from asset'),
             onPressed: () {
               _navigateToPage(
                 title: 'Pdf from asset',
                 child: PDF.asset(
                   'assets/pdf/demo.pdf',
-                  placeHolder: Image.asset('assets/images/pdf.png',
-                      height: 200, width: 100),
+                  placeHolder: Image.asset(
+                    'assets/images/pdf.png',
+                    height: 200,
+                    width: 100,
+                  ),
                 ),
               );
             },
