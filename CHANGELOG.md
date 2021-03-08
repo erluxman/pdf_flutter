@@ -1,4 +1,4 @@
-#### 2.0.0  Migration to null safety
+#### 2.0.0-dev.1  Migration to null safety
 #### 1.1.4  Upgrade dependencies
 #### 1.1.3  Fixing bug on release mode
 #### 1.1.2  Update README
