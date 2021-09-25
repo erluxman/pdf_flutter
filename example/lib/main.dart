@@ -38,8 +38,11 @@ class _PDFListBodyState extends State<PDFListBody> {
                 title: 'Pdf from asset',
                 child: PDF.asset(
                   'assets/pdf/demo.pdf',
-                  placeHolder: Image.asset('assets/images/pdf.png',
-                      height: 200, width: 100),
+                  placeHolder: Image.asset(
+                    'assets/images/pdf.png',
+                    height: 200,
+                    width: 100,
+                  ),
                 ),
               );
             },
