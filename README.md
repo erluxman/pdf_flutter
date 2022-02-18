@@ -24,6 +24,9 @@ Add this on `ios/Runner/info.plist`:
                 'https://raw.githubusercontent.com/FlutterInThai/Dart-for-Flutter-Sheet-cheet/master/Dart-for-Flutter-Cheat-Sheet.pdf',
                 height: 500,
                 width: 300,
+                maxAndroidZoom: widget.maxAndroidZoom,
+                midAndroidZoom: widget.midAndroidZoom,
+                minAndroidZoom: widget.minAndroidZoom,
         )
               
 #### Load PDF files
@@ -33,6 +36,9 @@ Add this on `ios/Runner/info.plist`:
             fileName,
             height: 200,
             width: 100,
+            maxAndroidZoom: widget.maxAndroidZoom,
+            midAndroidZoom: widget.midAndroidZoom,
+            minAndroidZoom: widget.minAndroidZoom,
         )
         
 #### Load PDF from assets
@@ -41,6 +47,9 @@ Add this on `ios/Runner/info.plist`:
             "assets/pdf/demo.pdf",
             height: 200,
             width: 100,
+            maxAndroidZoom: widget.maxAndroidZoom,
+            midAndroidZoom: widget.midAndroidZoom,
+            minAndroidZoom: widget.minAndroidZoom,
         )
 
 #### For Production
