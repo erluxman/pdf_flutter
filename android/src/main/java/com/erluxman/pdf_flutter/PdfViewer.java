@@ -18,6 +18,9 @@ import io.flutter.plugin.platform.PlatformView;
 public class PdfViewer implements PlatformView, MethodCallHandler {
     private PDFView pdfView;
     private String filePath;
+    private double minZoom;
+    private double midZoom;
+    private double maxZoom;
 
     PdfViewer(Context context, BinaryMessenger messenger, int id, Map<String, Object> args) {
         MethodChannel methodChannel = new MethodChannel(messenger, "pdf_viewer_plugin_" + id);
@@ -29,7 +32,10 @@ public class PdfViewer implements PlatformView, MethodCallHandler {
             return;
         }
 
-        filePath = (String)args.get("filePath");
+        filePath = (String) args.get("filePath");
+        minZoom = (double) args.get("minZoom");
+        midZoom = (double) args.get("midZoom");
+        maxZoom = (double) args.get("maxZoom");
         loadPdfView();
     }
 
@@ -43,6 +49,9 @@ public class PdfViewer implements PlatformView, MethodCallHandler {
     }
 
     private void loadPdfView() {
+        pdfView.setMinZoom((float) minZoom);
+        pdfView.setMidZoom((float) midZoom);
+        pdfView.setMaxZoom((float) maxZoom);
         pdfView.fromFile(new File(filePath))
                 .enableSwipe(true) // allows to block changing pages using swipe
                 .swipeHorizontal(false)

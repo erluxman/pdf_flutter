@@ -18,6 +18,9 @@ class PDF extends StatefulWidget {
     this.width = double.maxFinite,
     this.height = double.maxFinite,
     this.placeHolder,
+    this.minAndroidZoom,
+    this.midAndroidZoom,
+    this.maxAndroidZoom,
   });
 
   /// Load PDF from network
@@ -28,12 +31,25 @@ class PDF extends StatefulWidget {
     double width = double.maxFinite,
     double height = double.maxFinite,
     Widget? placeHolder,
+
+    /// 1.0 by default
+    double? minAndroidZoom,
+
+    /// 1.75 by default
+    double? midAndroidZoom,
+
+    /// 3 by default
+    double? maxAndroidZoom,
   }) {
     return PDF._(
-        networkURL: url,
-        width: width,
-        height: height,
-        placeHolder: placeHolder);
+      networkURL: url,
+      width: width,
+      height: height,
+      placeHolder: placeHolder,
+      minAndroidZoom: minAndroidZoom,
+      midAndroidZoom: midAndroidZoom,
+      maxAndroidZoom: maxAndroidZoom,
+    );
   }
 
   /// Load PDF from network
@@ -44,12 +60,24 @@ class PDF extends StatefulWidget {
     double width = double.maxFinite,
     double height = double.maxFinite,
     Widget? placeHolder,
+
+    /// 1.0 by default
+    double? minAndroidZoom,
+
+    /// 1.75 by default
+    double? midAndroidZoom,
+
+    /// 3 by default
+    double? maxAndroidZoom,
   }) {
     return PDF._(
       file: file,
       width: width,
       height: height,
       placeHolder: placeHolder,
+      minAndroidZoom: minAndroidZoom,
+      midAndroidZoom: midAndroidZoom,
+      maxAndroidZoom: maxAndroidZoom,
     );
   }
 
@@ -61,12 +89,25 @@ class PDF extends StatefulWidget {
     double width = double.maxFinite,
     double height = double.maxFinite,
     Widget? placeHolder,
+
+    /// 1.0 by default
+    double? minAndroidZoom,
+
+    /// 1.75 by default
+    double? midAndroidZoom,
+
+    /// 3 by default
+    double? maxAndroidZoom,
   }) {
     return PDF._(
-        assetsPath: assetPath,
-        width: width,
-        height: height,
-        placeHolder: placeHolder);
+      assetsPath: assetPath,
+      width: width,
+      height: height,
+      placeHolder: placeHolder,
+      minAndroidZoom: minAndroidZoom,
+      midAndroidZoom: midAndroidZoom,
+      maxAndroidZoom: maxAndroidZoom,
+    );
   }
 
   final String? networkURL;
@@ -75,6 +116,15 @@ class PDF extends StatefulWidget {
   final double height;
   final double width;
   final Widget? placeHolder;
+
+  /// 1.0 by default
+  final double? minAndroidZoom;
+
+  /// 1.75 by default
+  final double? midAndroidZoom;
+
+  /// 3 by default
+  final double? maxAndroidZoom;
 
   @override
   _PDFState createState() => _PDFState();
@@ -164,6 +214,9 @@ class _PDFState extends State<PDF> {
               width: widget.width,
               child: PdfViewer(
                 filePath: path!,
+                minAndroidZoom: widget.minAndroidZoom,
+                midAndroidZoom: widget.midAndroidZoom,
+                maxAndroidZoom: widget.maxAndroidZoom,
                 onPdfViewerCreated: () {
                   debugPrint('PDF view created');
                 },
@@ -196,11 +249,18 @@ typedef void PdfViewerCreatedCallback();
 class PdfViewer extends StatefulWidget {
   const PdfViewer({
     required this.filePath,
+    this.minAndroidZoom,
+    this.midAndroidZoom,
+    this.maxAndroidZoom,
     Key? key,
     this.onPdfViewerCreated,
   }) : super(key: key);
 
   final String filePath;
+  final double? minAndroidZoom;
+  final double? midAndroidZoom;
+  final double? maxAndroidZoom;
+
   final PdfViewerCreatedCallback? onPdfViewerCreated;
 
   @override
@@ -208,6 +268,18 @@ class PdfViewer extends StatefulWidget {
 }
 
 class _PdfViewerState extends State<PdfViewer> {
+  final androidZoomList = List<double>.empty(growable: true);
+
+  @override
+  void initState() {
+    super.initState();
+    androidZoomList.addAll([
+      widget.minAndroidZoom ?? 1.0,
+      widget.midAndroidZoom ?? 1.75,
+      widget.maxAndroidZoom ?? 3.0,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
@@ -215,6 +287,9 @@ class _PdfViewerState extends State<PdfViewer> {
         viewType: 'pdf_flutter_plugin',
         creationParams: <String, dynamic>{
           'filePath': widget.filePath,
+          'minZoom': androidZoomList.first,
+          'midZoom': androidZoomList[1],
+          'maxZoom': androidZoomList.last,
         },
         creationParamsCodec: const StandardMessageCodec(),
         onPlatformViewCreated: _onPlatformViewCreated,

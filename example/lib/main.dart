@@ -14,13 +14,28 @@ class PdfApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('pdf_flutter demo'),
         ),
-        body: PDFListBody(),
+        body: const PDFListBody(
+          maxAndroidZoom: 10,
+          midAndroidZoom: 5,
+          minAndroidZoom: 1,
+        ),
       ),
     );
   }
 }
 
 class PDFListBody extends StatefulWidget {
+  const PDFListBody({
+    Key? key,
+    this.minAndroidZoom,
+    this.midAndroidZoom,
+    this.maxAndroidZoom,
+  }) : super(key: key);
+
+  final double? minAndroidZoom;
+  final double? midAndroidZoom;
+  final double? maxAndroidZoom;
+
   @override
   _PDFListBodyState createState() => _PDFListBodyState();
 }
@@ -43,6 +58,9 @@ class _PDFListBodyState extends State<PDFListBody> {
                     height: 200,
                     width: 100,
                   ),
+                  maxAndroidZoom: widget.maxAndroidZoom,
+                  midAndroidZoom: widget.midAndroidZoom,
+                  minAndroidZoom: widget.minAndroidZoom,
                 ),
               );
             },
@@ -54,6 +72,9 @@ class _PDFListBodyState extends State<PDFListBody> {
                 title: 'Pdf from networkUrl',
                 child: PDF.network(
                   'https://google-developer-training.github.io/android-developer-fundamentals-course-concepts/en/android-developer-fundamentals-course-concepts-en.pdf',
+                  maxAndroidZoom: widget.maxAndroidZoom,
+                  midAndroidZoom: widget.midAndroidZoom,
+                  minAndroidZoom: widget.minAndroidZoom,
                 ),
               );
             },
@@ -70,6 +91,9 @@ class _PDFListBodyState extends State<PDFListBody> {
                       title: 'PDF from file',
                       child: PDF.file(
                         File(file!.files[0].path!),
+                        maxAndroidZoom: widget.maxAndroidZoom,
+                        midAndroidZoom: widget.midAndroidZoom,
+                        minAndroidZoom: widget.minAndroidZoom,
                       ),
                     );
                   } else {
